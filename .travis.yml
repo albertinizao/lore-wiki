@@ -1,0 +1,16 @@
+language: java
+jdk:
+  - oraclejdk8
+branches:
+  only:
+  - master
+  - stable
+  - develop
+deploy:
+  provider: heroku
+  api_key:
+    secure: "85369d8e-5bef-4798-a4e4-55fef5605fc9"
+  app:
+    master: lore-wiki
+after_success:
+  - mvn clean test jacoco:report coveralls:report --quiet
