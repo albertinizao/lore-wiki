@@ -7,10 +7,18 @@ import com.opipo.rev.lorewiki.service.impl.AbstractServiceDTO;
 import com.opipo.rev.lorewiki.service.impl.PageServiceImpl;
 import com.opipo.rev.lorewiki.service.interfaces.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class PageServiceTest implements CRUDServiceTest<Page, String> {
@@ -46,6 +54,31 @@ public class PageServiceTest implements CRUDServiceTest<Page, String> {
     public Page buildElement(String id) {
         Page page = new Page();
         page.setUrl(id);
+        page.setTerms(new ArrayList<>());
         return page;
+    }
+
+    @Test
+    void givenElementWithUniqueTerm(){
+        Page page = buildElement("idTerm");
+        String term = "terCorrect";
+        page.setTerms(term);
+        Mockito.when(pageRepository.findByTerms(term)).thenReturn(Arrays.asList(page));
+        Mockito.when(getRepository().save(page)).thenReturn(page);
+        Page actual = getService().save(page);
+        assertEquals(page, actual);
+    }
+
+    @Test
+    void givenElementWithDuplicatedTerm(){
+        Page page = buildElement("idTerm");
+        String term = "terCorrect";
+        page.setTerms(term);
+        Page page2 = buildElement("idTerm2");
+        page2.setTerms(term);
+        Mockito.when(pageRepository.findByTerms(term)).thenReturn(Arrays.asList(page,page2));
+        Mockito.when(getRepository().save(page)).thenReturn(page);
+        IllegalArgumentException iae = assertThrows(IllegalArgumentException.class, ()->getService().save(page));
+        assertEquals("The term exists",iae.getLocalizedMessage());
     }
 }

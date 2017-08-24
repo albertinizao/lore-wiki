@@ -38,12 +38,12 @@ public class PageRepositoryIntegrationTest extends MongoRepositoryComplete<Page,
 
 	@Test
 	public void findByTerm(){
-		Assert.assertTrue(pageRepository.findByTerms("term")!=null);
+		Assert.assertFalse(pageRepository.findByTerms("term").isEmpty());
 	}
 
 	@Test
 	public void findByIncorrectTerm(){
-		Assert.assertFalse(pageRepository.findByTerms("FAKE")!=null);
+		Assert.assertTrue(pageRepository.findByTerms("FAKE").isEmpty());
 	}
 
 	@Override

@@ -10,8 +10,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Document
 @ApiModel(value = "Page", description = "Page with information")
@@ -27,11 +29,11 @@ public class Page implements Serializable, Comparable<Page> {
 
     @ApiModelProperty(value = "If the page is private", required = false, example = "false")
     @NotEmpty
-    private Boolean isPrivate=false;
+    private Boolean isPrivate = false;
 
-    @ApiModelProperty(value = "Term that are used as links", required = false, dataType="List", example = "nacion,Nación,nation")
+    @ApiModelProperty(value = "Term that are used as links", required = false, dataType = "List", example = "nacion,Nación,nation")
     @NotEmpty
-    private List<String> terms;
+    private List<String> terms = new ArrayList<>();
 
     public String getUrl() {
         return url;
@@ -68,6 +70,7 @@ public class Page implements Serializable, Comparable<Page> {
     public void setIsPrivate(Boolean aPrivate) {
         isPrivate = aPrivate;
     }
+
     @Override
     public int hashCode() {
         final HashCodeBuilder hcb = new HashCodeBuilder();
@@ -83,12 +86,16 @@ public class Page implements Serializable, Comparable<Page> {
         if (!(object instanceof Page)) {
             return false;
         }
-        final Page other = ( Page ) object;
+        final Page other = (Page) object;
         final EqualsBuilder eqb = new EqualsBuilder();
         eqb.append(this.getUrl(), other.getUrl());
         eqb.append(this.getName(), other.getName());
         eqb.append(this.getIsPrivate(), other.getIsPrivate());
         eqb.append(this.getTerms(), other.getTerms());
+        if (this.getTerms()!=null && other.getTerms()!=null) {
+            eqb.append(this.getTerms().size(), other.getTerms().size());
+            eqb.append(true, this.getTerms().containsAll(other.getTerms()));
+        }
         return eqb.isEquals();
     }
 
@@ -98,7 +105,10 @@ public class Page implements Serializable, Comparable<Page> {
         ctb.append(this.getUrl(), other.getUrl());
         ctb.append(this.getName(), other.getName());
         ctb.append(this.getIsPrivate(), other.getIsPrivate());
-        ctb.append(this.getTerms(), other.getTerms());
+        ctb.append(this.getTerms()==null, other.getTerms()==null);
+        if (this.getTerms()!=null && other.getTerms()!=null){
+            ctb.append(this.getTerms().stream().collect(Collectors.joining()),other.getTerms().stream().collect(Collectors.joining()));
+        }
         return ctb.toComparison();
     }
 
