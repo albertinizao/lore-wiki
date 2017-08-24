@@ -1,4 +1,4 @@
-package com.opipio.rev.lorewiki;
+package com.opipo.rev.lorewiki;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.collect.Lists;
@@ -28,7 +28,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-@ComponentScan(basePackages = {"com.opipio.rev"})
+@ComponentScan(basePackages = {"com.opipo.rev"})
 public class LoreWikiApplication {
 
 
