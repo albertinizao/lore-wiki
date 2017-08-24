@@ -2,14 +2,14 @@
 spring:
     data:
         mongodb:
-            uri: mongodb://duties:albertinizao@ds145230.mlab.com:45230/heroku_kzn6rtvp 
-    
+            uri: mongodb://lore-wiki:albertinizao@ds157833.mlab.com:57833/heroku_74kpjs65
+
 logging:
     level:
         org.springframework: ERROR
         springfox: ERROR
         org.apache.catalina.core: ERROR
         com.opipo: ERROR
-            
+
 token:
     secret: 9SyECk96oDsTmXfogIieDI0cD/8FpnojlYSUJT5U9I/FGVmBz5oskmjOR8cbXTvoPjX+Pq/T/b1PqpHX0lYm0oCBjXWICA==
