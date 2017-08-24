@@ -14,6 +14,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,6 +34,16 @@ public class PageRepositoryIntegrationTest extends MongoRepositoryComplete<Page,
 	@Test
 	public void autowiredCorrectly(){
 		Assert.assertNotNull(mongoTemplate);
+	}
+
+	@Test
+	public void findByTerm(){
+		Assert.assertTrue(pageRepository.findByTerms("term")!=null);
+	}
+
+	@Test
+	public void findByIncorrectTerm(){
+		Assert.assertFalse(pageRepository.findByTerms("FAKE")!=null);
 	}
 
 	@Override
@@ -68,6 +81,11 @@ public class PageRepositoryIntegrationTest extends MongoRepositoryComplete<Page,
 		page.setName(name);
 		page.setUrl(url);
 		page.setIsPrivate(isPrivate);
+		page.setTerms(getTerms());
 		return page;
+	}
+
+	private List<String> getTerms(){
+		return Arrays.asList(new String[]{"term","term2"});
 	}
 }
