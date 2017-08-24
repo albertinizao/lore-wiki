@@ -26,6 +26,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
+
 @SpringBootApplication
 @EnableSwagger2
 @ComponentScan(basePackages = {"com.opipo.rev"})
@@ -99,6 +101,6 @@ public class LoreWikiApplication {
 	private ApiInfo apiInfo() {
 
 		return new ApiInfo(baseName, baseDescription, appVersion, termsOfServiceUrl,
-				new Contact(contactName, contactUrl, contactEmail), licenseValue, licenseUrl);
+				new Contact(contactName, contactUrl, contactEmail), licenseValue, licenseUrl, new ArrayList<>());
 	}
 }

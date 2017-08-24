@@ -3,6 +3,9 @@ package com.opipo.rev.lorewiki.model;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -21,6 +24,13 @@ public class PageTest {
         String url = Integer.toString(1);
         page.setUrl(url);
         assertEquals("The attribute is not the expected", url, page.getUrl());
+    }
+
+    @Test
+    public void termAttributeTest() {
+        List<String> terms = Arrays.asList(new String[]{"term"});
+        page.setTerms(terms);
+        assertEquals("The attribute is not the expected", terms, page.getTerms());
     }
 
 

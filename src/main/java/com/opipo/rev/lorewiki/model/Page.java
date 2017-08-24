@@ -10,6 +10,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 @Document
 @ApiModel(value = "Page", description = "Page with information")
@@ -27,6 +29,10 @@ public class Page implements Serializable, Comparable<Page> {
     @NotEmpty
     private Boolean isPrivate=false;
 
+    @ApiModelProperty(value = "Term that are used as links", required = false, dataType="List", example = "nacion,Nación,nation")
+    @NotEmpty
+    private List<String> terms;
+
     public String getUrl() {
         return url;
     }
@@ -43,6 +49,18 @@ public class Page implements Serializable, Comparable<Page> {
         this.name = name;
     }
 
+    public List<String> getTerms() {
+        return terms;
+    }
+
+    public void setTerms(List<String> terms) {
+        this.terms = terms;
+    }
+
+    public void setTerms(String term) {
+        this.terms = Arrays.asList(term.split(","));
+    }
+
     public Boolean getIsPrivate() {
         return isPrivate;
     }
@@ -56,6 +74,7 @@ public class Page implements Serializable, Comparable<Page> {
         hcb.append(getUrl());
         hcb.append(getName());
         hcb.append(getIsPrivate());
+        hcb.append(getTerms());
         return hcb.toHashCode();
     }
 
@@ -69,6 +88,7 @@ public class Page implements Serializable, Comparable<Page> {
         eqb.append(this.getUrl(), other.getUrl());
         eqb.append(this.getName(), other.getName());
         eqb.append(this.getIsPrivate(), other.getIsPrivate());
+        eqb.append(this.getTerms(), other.getTerms());
         return eqb.isEquals();
     }
 
@@ -78,6 +98,7 @@ public class Page implements Serializable, Comparable<Page> {
         ctb.append(this.getUrl(), other.getUrl());
         ctb.append(this.getName(), other.getName());
         ctb.append(this.getIsPrivate(), other.getIsPrivate());
+        ctb.append(this.getTerms(), other.getTerms());
         return ctb.toComparison();
     }
 
